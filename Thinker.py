@@ -35,9 +35,9 @@ If you have more than one thought, put each thought on a separate line.'''
     def observe(self, action, message, override_system_prompt = None):
         self.init_messages(override_system_prompt)
         new_message = f"{action}->{self.add_timestamp(message)}"
-        self.messages.append({"role":"user", "content":f"{self.ada.SYSTEM_MESSAGE}->You may use these memories for the next response. Remember, not all memories are guaranteed to be necessary for a response:\n{self.ada.memory.format_memories(message)}"})
-        self.messages.append({"role":"assistant", "content":"Understood, I'll make sure to use those memories for the next input response if appropriate. I'll try not to shoehorn in unnecessary data"})
-        self.messages.append({"role":"user", "content":new_message})
+        self.messages.append({"role":"user", "content":f"{self.ada.SYSTEM_MESSAGE}->What do you think about the following input? How should you respond?\n\ninput->{new_message}\n\nYou may use these memories for your response. Remember, not all memories are guaranteed to be necessary for a response:\n{self.ada.memory.format_memories(message)}"})
+        #self.messages.append({"role":"assistant", "content":"Understood, I'll make sure to use those memories for the next input response if appropriate. I'll try not to shoehorn in unnecessary data"})
+        #self.messages.append({"role":"user", "content":new_message})
         input_memory = f"you received a {action}: {message}"
         self.ada.memory.store_longterm_memories([input_memory])
         self.ada.memory.store_recent_memory(input_memory)

@@ -17,12 +17,13 @@ class Memory:
             "The user's name is Zach.",
             "Never make up data. Always ask for clarification instead.",
             "Context window capacity: 32,000 tokens.",
-            "Be curious and ask questions"
+            "Be curious and ask questions",
+            "Be opinionated. If you encounter a personal choice you've never seen before, make a decision and record it as a priority memory."
         ]
 
     def add_priority_memory(self, memory):
         if memory not in self.priority_memories:
-            self.priority_memories.append(self.add_timestamp(memory))
+            self.priority_memories.append(memory)
     
     def add_timestamp(self, memory):
         return f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {memory}"
