@@ -1,6 +1,7 @@
 from Ada import Ada
 import datetime
 
+# Class that handles sensor input (user messages, whatever, etc) and thinking about them
 class Thinker:
     def __init__(self, ada: Ada):
         self.ada = ada
@@ -13,9 +14,11 @@ If you have more than one thought, put each thought on a separate line.'''
         self.init_messages()
         self.last_thoughts = []
     
+    # Pure function that takes a thought and returns a new one with a timestamp on it
     def add_timestamp(self, thought):
         return f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {thought}"
 
+    # Deprecated, should be removed once I'm off this plane and can execute the model
     def init_messages(self, override_system_prompt = None):
         system_prompt = self.system_prompt
         if override_system_prompt != None:
@@ -31,7 +34,9 @@ If you have more than one thought, put each thought on a separate line.'''
             }
         ]
 
-    
+    # Main entry point for the Thinker. Allows the LLM to create observances in the form of thoughts based on some input
+    # This is all pretty freeform so we have to do some rudimentary shepherding to make sure things stay sane
+    # The default system prompt here also gives the model power to create priority memories here. This will likely be changed in the future to a dedicated priority rememberer
     def observe(self, action, message, override_system_prompt = None):
         self.init_messages(override_system_prompt)
         new_message = f"{action}->{self.add_timestamp(message)}"
@@ -46,7 +51,8 @@ If you have more than one thought, put each thought on a separate line.'''
         memories = []
         thoughts = new_messages[-1]["content"].split("\n")
         for thought in thoughts:
-            if thought != '':
+            # Mistral at least likes to adds headders and new lines a lot.....
+            if thought != '' and thought.strip().lower() != "thoughts:" and thought.strip().lower() != "thoughts":
                 self.last_thoughts.append(self.add_timestamp(thought))
                 memory = ""
                 if "[pri]" in thought:
@@ -58,5 +64,3 @@ If you have more than one thought, put each thought on a separate line.'''
                 memories.append(memory)
                 self.ada.memory.store_recent_memory(memory)
         self.ada.memory.store_longterm_memories(memories)
-        
-        # self.messages.append({"role":"assistant", "content":response})
