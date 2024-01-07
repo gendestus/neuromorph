@@ -1,6 +1,7 @@
 # Introducing Ada, the world's first neuromorphic assistant
 
 Neuro = Brain
+
 Morph = Shape
 
 Meet Ada. She's an AI assistant that has opinions, argues with passion, and is eager to learn about the world.
