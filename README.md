@@ -18,6 +18,14 @@ creativity, and long term desires. I figured I would open source it to get more 
 - **Doer**: This is the action taker that processes the Thinker's thoughts and executes actions based on them. Currently only supports outputting text
 - **Memory**: This automatically handles the storage and retrieval of 3 different types of memories. It uses ChromaDB as a backend and is loosely based on the Simulacra paper memory structure here: https://arxiv.org/pdf/2304.03442.pdf
 
+## Memory Types
+- **Priority Memories**: These define the identity of the agent. All priority memories are supplied to the thinker for each generation. Think of them like RoboCop's Prime Directives.
+- **Relevant Memories**: These are memories stored in a vector database and are retrieved based on the circumstances of the current generation task. 
+- **Recent Memories**: These are memories stored in a First-In-First-Out list that allow the agent to keep track of the current situation.
+
+## A Note About Context Windows
+The memory system is doing a lot of heavy lifting for the agent's situational awareness. Conversations are not maintained in the context window like normal LLM interactions. In fact, every generation starts with a clean message stack. 
+
 ## Supported Models
 - Mistral7B
 - Dolphin
