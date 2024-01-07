@@ -26,6 +26,9 @@ creativity, and long term desires. I figured I would open source it to get more 
 ## A Note About Context Windows
 The memory system is doing a lot of heavy lifting for the agent's situational awareness. Conversations are not maintained in the context window like normal LLM interactions. In fact, every generation starts with a clean message stack. 
 
+## Hardware Requirements
+Until ollama is implemented, core functionality is really only possible with an RTX GPU with at least 16gb of vram, 24gb preferred. I'm getting 1-2 second inference times on a single RTX 4090 with 24gb with half-precision (on by default) but your mileage may vary.
+
 ## Supported Models
 - Mistral7B
 - Dolphin
