@@ -11,28 +11,51 @@ class Neuromorph:
     #TODO: add support for ollama
     MISTRAL7B = "mistralai/Mistral-7B-Instruct-v0.2"
     DOLPHIN = "cognitivecomputations/dolphin-2.6-mistral-7b"
+    OLLAMA_MIXTRAL = "mixtral"
+    OLLAMA_DOLPHIN = "dolphin-mixtral"
+    OLLAMA_MISTRAL7B = "mistral"
 
     # Upon creation, the main class will load the desired model into memory and initialize the component parts of the brain
     # torch type will default to half precision because that's what works with mistral on consumer grade gpus for now
     # display_thoughts defaults to off because text output gets real messy with it on
-    def __init__(self, model_name, agent_name = "Ada", torch_type = torch.float16, display_thoughts = False):
+    def __init__(self, model_name, agent_name = "Ada", use_ollama = False, ollama_host = "http://localhost:11434", torch_type = torch.float16, display_thoughts = False):
+        local_model_names = [
+            Neuromorph.MISTRAL7B,
+            Neuromorph.DOLPHIN
+        ]
+        ollama_model_names = [
+            Neuromorph.OLLAMA_MIXTRAL,
+            Neuromorph.OLLAMA_DOLPHIN,
+            Neuromorph.OLLAMA_MISTRAL7B
+        ]
+
         if not agent_name.isalpha():
             raise Exception("agent_name must be alphabetic")
         self.agent_name = agent_name.capitalize()
         self.model_name = model_name
-        self.model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch_type)
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+        self.using_ollama = use_ollama
+        self.ollama_host = ollama_host
 
-        # AFAIK Dolphin's ChatML format is not automatic with torch's tokenizers
-        if model_name == Neuromorph.DOLPHIN:
-            self.tokenizer.chat_template = "{% for message in messages %}{{'<|im_start|>' + message['role'] + '\n' + message['content'] + '<|im_end|>' + '\n'}}{% endfor %}{{'<|im_start|> assistant\n'}}"
+        if self.using_ollama:
+            if self.model_name not in ollama_model_names:
+                raise Exception(f"Model {self.model_name} is not supported by ollama")
 
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
-        if self.device == "cpu":
-            #TODO: make this a warning or something
-            print("watch out! torch device set to cpu which is not fully implemented. Stuff will break.")
+        else:
+            if self.model_name not in local_model_names:
+                raise Exception(f"Model {self.model_name} is not supported locally. Did you use a ollama model name by mistake?")
+            self.model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch_type)
+            self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+            # AFAIK Dolphin's ChatML format is not automatic with torch's tokenizers
+            if model_name == Neuromorph.DOLPHIN:
+                self.tokenizer.chat_template = "{% for message in messages %}{{'<|im_start|>' + message['role'] + '\n' + message['content'] + '<|im_end|>' + '\n'}}{% endfor %}{{'<|im_start|> assistant\n'}}"
+            self.device = "cuda" if torch.cuda.is_available() else "cpu"
+            if self.device == "cpu":
+                #TODO: make this a warning or something
+                print("watch out! You're trying to run a model locally on CPU without ollama. Stuff will break!")
 
         # Config copied from the LLM arena thing
+        # NOT USED BY OLLAMA
         # URL: 
         self.model_config = {
             "epsilon_cutoff": 1.49,
