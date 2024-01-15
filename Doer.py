@@ -1,4 +1,4 @@
-from Ada import Ada
+from Neuromorph import Neuromorph
 from .Actions import Say
 
 # The part of the brain that takes recent thoughts and decides if and what it should do with them
@@ -6,8 +6,8 @@ from .Actions import Say
 # To make the neuromorph interesting, I'll have to add new actions and figure out some way to switch them
 # Probably another model call....
 class Doer:
-    def __init__(self, ada: Ada):
-        self.ada = ada
+    def __init__(self, neuromorph: Neuromorph):
+        self.neuromorph = neuromorph
         self.say = Say.Say(ada)
     
     def do(self):

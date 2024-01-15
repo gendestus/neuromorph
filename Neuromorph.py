@@ -6,8 +6,7 @@ from .Thinker import Thinker
 from .Doer import Doer
 
 # Main Entrypoint for the neuromorphic agent
-#TODO: Change the name since the project has been open sourced
-class Ada:
+class Neuromorph:
     # The currently supported model backends
     #TODO: add support for ollama
     MISTRAL7B = "mistralai/Mistral-7B-Instruct-v0.2"
@@ -22,7 +21,7 @@ class Ada:
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
 
         # AFAIK Dolphin's ChatML format is not automatic with torch's tokenizers
-        if model_name == Ada.DOLPHIN:
+        if model_name == Neuromorph.DOLPHIN:
             self.tokenizer.chat_template = "{% for message in messages %}{{'<|im_start|>' + message['role'] + '\n' + message['content'] + '<|im_end|>' + '\n'}}{% endfor %}{{'<|im_start|> assistant\n'}}"
 
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -96,7 +95,7 @@ class Ada:
         self.model.to(self.device)
         generated_ids = self.model.generate(model_inputs, max_new_tokens=1000, do_sample=True, **self.model_config)
         decoded = self.tokenizer.batch_decode(generated_ids)
-        if self.model_name == Ada.DOLPHIN:
+        if self.model_name == Neuromorph.DOLPHIN:
             response = self.get_chatml_response(decoded[0])
         else:
             response = self.get_mistral_response(decoded[0])

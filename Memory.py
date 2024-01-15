@@ -1,4 +1,4 @@
-from Ada import Ada
+from Neuromorph import Neuromorph
 import chromadb
 import datetime
 import uuid
@@ -9,11 +9,11 @@ import uuid
 # Recent Memories: for each generation {max_recent_memories} will be returned so that the neuromorph can keep track of a conversation
 # Longterm Memories: Longterm memory is stored in a chromadb and anything within the {max_longterm_retrieval_distance} will be made available for generation
 class Memory:
-    def __init__(self, ada: Ada, memory_collection_name = "memories", max_recent_memories = 10, max_longterm_retrieval_distance = 1.54):
+    def __init__(self, neuromorph: Neuromorph, memory_collection_name = "memories", max_recent_memories = 10, max_longterm_retrieval_distance = 1.54):
         self.memory_collection_name = memory_collection_name
         self.max_recent_memories = max_recent_memories
         self.max_longterm_retrieval_distance = max_longterm_retrieval_distance
-        self.ada = ada
+        self.neuromorph = neuromorph
         self.client = chromadb.Client()
         #self.longterm_memories = self.client.create_collection(memory_collection_name)
         self.reset_memories()
