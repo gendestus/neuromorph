@@ -192,7 +192,7 @@ class Neuromorph:
     def install_thinker(self):
         print("installing thinker")
         try:
-            with open("Modelfiles/Thinker.modelfile", "r") as f:
+            with open("./Modelfiles/Thinker.modelfile", "r") as f:
                 modelfile = f.read()
                 payload = {
                     "name": Neuromorph.OLLAMA_THINKER,
@@ -210,7 +210,7 @@ class Neuromorph:
     def install_sayer(self):
         print("installing sayer")
         try:
-            with open("Modelfiles/Sayer.modelfile", "r") as f:
+            with open("./Modelfiles/Sayer.modelfile", "r") as f:
                 modelfile = f.read()
                 payload = {
                     "name": Neuromorph.OLLAMA_SAYER,
