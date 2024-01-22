@@ -44,7 +44,9 @@ class Memory:
 
     # Clears memories and remakes the Chroma collection    
     def reset_memories(self):
-        self.client.delete_collection(self.memory_collection_name)
+        # check if the collection exists and delete it if it does
+        if self.memory_collection_name in self.client.list_collections():
+            self.client.delete_collection(self.memory_collection_name)
         self.longterm_memories = self.client.create_collection(self.memory_collection_name)
     
     # Returns a string that represents appropriate memories for a particular input 
