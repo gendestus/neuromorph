@@ -1,7 +1,10 @@
-from Neuromorph import Neuromorph
 import chromadb
 import datetime
 import uuid
+
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from neuromorph import Neuromorph
 
 # Class that handles memory generation and storage
 # Currently, there is no persistence. All memories are ephemeral and will clear if the kernel is restarted
@@ -9,7 +12,7 @@ import uuid
 # Recent Memories: for each generation {max_recent_memories} will be returned so that the neuromorph can keep track of a conversation
 # Longterm Memories: Longterm memory is stored in a chromadb and anything within the {max_longterm_retrieval_distance} will be made available for generation
 class Memory:
-    def __init__(self, neuromorph: Neuromorph, memory_collection_name = "memories", max_recent_memories = 10, max_longterm_retrieval_distance = 1.54):
+    def __init__(self, neuromorph: "Neuromorph", memory_collection_name = "memories", max_recent_memories = 10, max_longterm_retrieval_distance = 1.54):
         self.memory_collection_name = memory_collection_name
         self.max_recent_memories = max_recent_memories
         self.max_longterm_retrieval_distance = max_longterm_retrieval_distance

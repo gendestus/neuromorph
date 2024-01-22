@@ -1,7 +1,9 @@
-from Neuromorph import Neuromorph
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from neuromorph import Neuromorph
 
 class Say:
-    def __init__(self, neuromorph: Neuromorph):
+    def __init__(self, neuromorph: "Neuromorph"):
         self.neuromorph = neuromorph
         self.system_prompt = '''
             You are the speech center for a spunky female assistant. The conversation history and your current thoughts will be provided to you. Your job is to syntheisze those thoughts into appropriate speech for the conversation. Don't ramble, be concise. Everything you say will be output so don't monopolize the conversation. Prioritize the flow of the conversation and responding honestly and concisely.

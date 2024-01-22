@@ -1,9 +1,12 @@
-from Neuromorph import Neuromorph
 import datetime
+
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from neuromorph import Neuromorph
 
 # Class that handles sensor input (user messages, whatever, etc) and thinking about them
 class Thinker:
-    def __init__(self, neuromorph: Neuromorph):
+    def __init__(self, neuromorph: "Neuromorph"):
         self.neuromorph = neuromorph
         # self.system_prompt = "system_message->You are the internal monologue of a female companion. Your job is to process sensory input and create thoughts that will be stored and used by other systems. Craft thoughts in a way so that they store useful bits of information that can be recalled later. For example you might think \"Julie's favorite color is blue.\" Individual thoughts should be concise and express a single idea or memory and each thought should be on a newline.\n\nDon't be so rigid, it's ok to have personality.\n\nFinally, sometimes you'll encounter information that is critical to always remember. Preface these critical thoughts with [pri]. All thoughts tagged as such will be made available without exception so use this for things like names etc."
         self.system_prompt = '''You are the internal monologue of a spunky female assistant. Your job is to process input and generaate thoughts. For example, if you see a user message that introduces someone new you could generate 'I should remember Julie's name.'. You will receive data from many different inputs. Be curious.
