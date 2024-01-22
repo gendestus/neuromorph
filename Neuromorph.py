@@ -6,6 +6,9 @@ from .Memory import Memory
 from .Thinker import Thinker
 from .Doer import Doer
 
+from importlib import resources as impresources
+from . import Modelfiles
+
 # Main Entrypoint for the neuromorphic agent
 class Neuromorph:
     # The currently supported model backends
@@ -192,7 +195,8 @@ class Neuromorph:
     def install_thinker(self):
         print("installing thinker")
         try:
-            with open("./Modelfiles/Thinker.modelfile", "r") as f:
+            modelfile_path = impresources.files(Modelfiles).joinpath("Thinker.modelfile")
+            with modelfile_path.open("r") as f:
                 modelfile = f.read()
                 payload = {
                     "name": Neuromorph.OLLAMA_THINKER,
@@ -210,7 +214,8 @@ class Neuromorph:
     def install_sayer(self):
         print("installing sayer")
         try:
-            with open("./Modelfiles/Sayer.modelfile", "r") as f:
+            modelfile_path = impresources.files(Modelfiles).joinpath("Sayer.modelfile")
+            with modelfile_path.open("r") as f:
                 modelfile = f.read()
                 payload = {
                     "name": Neuromorph.OLLAMA_SAYER,
