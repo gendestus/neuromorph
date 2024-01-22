@@ -1,3 +1,4 @@
+import requests
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
@@ -14,6 +15,10 @@ class Neuromorph:
     OLLAMA_MIXTRAL = "mixtral"
     OLLAMA_DOLPHIN = "dolphin-mixtral"
     OLLAMA_MISTRAL7B = "mistral"
+
+    OLLAMA_THINKER = "neuromorph-thinker"
+    OLLAMA_DOER = "neuromorph-doer"
+    OLLAMA_SAYER = "neuromorph-sayer"
 
     # Upon creation, the main class will load the desired model into memory and initialize the component parts of the brain
     # torch type will default to half precision because that's what works with mistral on consumer grade gpus for now
@@ -41,8 +46,10 @@ class Neuromorph:
         self.ollama_host = ollama_host
 
         if self.using_ollama:
-            if self.model_name not in ollama_model_names:
-                raise Exception(f"Model {self.model_name} is not supported by ollama")
+            # model_name is probably deprecated for ollama...I just finished the documentation and the custom models thing seems like the way to go
+            # if self.model_name not in ollama_model_names:
+            #     raise Exception(f"Model {self.model_name} is not supported by ollama")
+            self.check_ollama_models()
 
         else:
             if self.model_name not in local_model_names:
@@ -88,6 +95,32 @@ class Neuromorph:
         new_messages = messages.copy()  
         new_messages.append({"role":role, "content":content})
         return new_messages
+    
+    def check_ollama_models(self):
+        required_models = [
+            Neuromorph.OLLAMA_THINKER,
+            Neuromorph.OLLAMA_DOER,
+            Neuromorph.OLLAMA_SAYER
+        ]
+        installed_models = self.get_installed_ollama_models()
+
+        for r_model in required_models:
+            model_found = False
+            for model in installed_models:
+                if r_model == model["name"].split(":")[0]:
+                    model_found = True
+                    break
+            if not model_found:
+                self.install_ollama_model(r_model)
+
+    def get_installed_ollama_models(self):
+        try:
+            r = requests.get(f"{self.ollama_host}/api/tags")
+            return r.json()["models"]
+        except Exception as e:
+            print(f"Error getting installed ollama models: {e}")
+            return []
+
 
     # Pure function that returns a new blank message list with a system prompt and an optional system response prompt
     def init_messages(self, system_prompt, system_response_prompt = None):
@@ -144,6 +177,26 @@ class Neuromorph:
         r_count = decoded_tokens.count("[/INST]")
         response = decoded_tokens.split("[/INST]")[r_count][0:-4].strip()
         return response
+    
+    # Ollama Install Methods
+    def install_ollama_model(self, model_name):
+        if model_name == Neuromorph.OLLAMA_THINKER:
+            self.install_thinker()
+        elif model_name == Neuromorph.OLLAMA_DOER:
+            self.install_doer()
+        elif model_name == Neuromorph.OLLAMA_SAYER:
+            self.install_sayer()
+        else:
+            raise Exception(f"Model {model_name} is not supported by ollama")
+        
+    def install_thinker(self):
+        print("installing thinker")
+
+    def install_doer(self):
+        print("installing doer")
+
+    def install_sayer(self):
+        print("installing sayer")
         
     
 
