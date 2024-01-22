@@ -31,6 +31,10 @@ class Neuromorph:
 
         if not agent_name.isalpha():
             raise Exception("agent_name must be alphabetic")
+        
+        if not agent_name.strip():
+            raise Exception("agent_name cannot be all whitespace")
+
         self.agent_name = agent_name.capitalize()
         self.model_name = model_name
         self.using_ollama = use_ollama
