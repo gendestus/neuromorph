@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 class Doer:
     def __init__(self, neuromorph: "Neuromorph"):
         self.neuromorph = neuromorph
-        self.say = Say.Say(ada)
+        self.say = Say.Say(neuromorph)
     
     def do(self):
         # For now, the only action we have is Say
