@@ -65,18 +65,18 @@ class Neuromorph:
                 #TODO: make this a warning or something
                 print("watch out! You're trying to run a model locally on CPU without ollama. Stuff will break!")
 
-        # Config copied from the LLM arena thing
-        # NOT USED BY OLLAMA
-        # URL: 
-        self.model_config = {
-            "epsilon_cutoff": 1.49,
-            "eta_cutoff": 10.42,
-            "repetition_penalty": 1.17,
-            "temperature": 1.31,
-            "top_k": 49,
-            "top_p": 0.14,
-            "pad_token_id": self.tokenizer.eos_token_id
-        }
+            # Config copied from the LLM arena thing
+            # NOT USED BY OLLAMA
+            # URL: 
+            self.model_config = {
+                "epsilon_cutoff": 1.49,
+                "eta_cutoff": 10.42,
+                "repetition_penalty": 1.17,
+                "temperature": 1.31,
+                "top_k": 49,
+                "top_p": 0.14,
+                "pad_token_id": self.tokenizer.eos_token_id
+            }
 
         self.display_thoughts = display_thoughts
 
@@ -191,12 +191,35 @@ class Neuromorph:
         
     def install_thinker(self):
         print("installing thinker")
+        try:
+            with open("Modelfiles/Thinker.modelfile", "r") as f:
+                modelfile = f.read()
+                payload = {
+                    "name": Neuromorph.OLLAMA_THINKER,
+                    "modelfile": modelfile
+                }
+                r = requests.post(f"{self.ollama_host}/api/create", json=payload)
+                print(r.text)
+        except Exception as e:
+            print(f"Error installing thinker: {e}")
 
     def install_doer(self):
         print("installing doer")
+        print("TODO: figure out the doer situation")
 
     def install_sayer(self):
         print("installing sayer")
+        try:
+            with open("Modelfiles/Sayer.modelfile", "r") as f:
+                modelfile = f.read()
+                payload = {
+                    "name": Neuromorph.OLLAMA_SAYER,
+                    "modelfile": modelfile
+                }
+                r = requests.post(f"{self.ollama_host}/api/create", json=payload)
+                print(r.text)
+        except Exception as e:
+            print(f"Error installing sayer: {e}")
         
     
 
