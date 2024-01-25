@@ -5,6 +5,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from .Memory import Memory
 from .Thinker import Thinker
 from .Doer import Doer
+from .Actions.Say import Say
 
 from importlib import resources as impresources
 from . import Modelfiles
@@ -155,16 +156,38 @@ class Neuromorph:
 
     # Method for interacting with the model
     # Handles passing in the messages in the correct format and returning the results
-    def generate(self, messages):
+    def generate(self, sender, messages):
         if self.using_ollama:
-            return self.generate_ollama(messages)
+            return self.generate_ollama(sender, messages)
         else:
-            return self.generate_local(messages)
+            return self.generate_local(sender, messages)
     
-    def generate_ollama(self, messages):
-        print(messages)
-        pass
-    def generate_local(self, messages):
+    def generate_ollama(self, sender, messages):
+        model_name = ""
+        if sender == Say.SENDER_ID:
+            model_name = Neuromorph.OLLAMA_SAYER
+        elif sender == Doer.SENDER_ID:
+            model_name = Neuromorph.OLLAMA_DOER
+        else:
+            model_name = Neuromorph.OLLAMA_THINKER
+        
+        payload = {
+            "model": model_name,
+            "prompt": messages[-1]["content"],
+            "stream": False
+        }
+
+        try:
+            r = requests.post(f"{self.ollama_host}/api/generate", json=payload)
+            new_messages = messages.copy()
+            new_messages.append({"role":"assistant", "content":r.json()["response"].strip()})
+            return new_messages
+        except Exception as e:
+            print(f"Error generating response from ollama: {e}")
+            return messages
+        
+        
+    def generate_local(self, sender, messages):
         encodings = self.tokenizer.apply_chat_template(messages, return_tensors="pt")
         model_inputs = encodings.to(self.device)
         self.model.to(self.device)

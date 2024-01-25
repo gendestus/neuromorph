@@ -6,6 +6,7 @@ if TYPE_CHECKING:
 
 # Class that handles sensor input (user messages, whatever, etc) and thinking about them
 class Thinker:
+    SENDER_ID = "THINKER"
     def __init__(self, neuromorph: "Neuromorph"):
         self.neuromorph = neuromorph
         # self.system_prompt = "system_message->You are the internal monologue of a female companion. Your job is to process sensory input and create thoughts that will be stored and used by other systems. Craft thoughts in a way so that they store useful bits of information that can be recalled later. For example you might think \"Julie's favorite color is blue.\" Individual thoughts should be concise and express a single idea or memory and each thought should be on a newline.\n\nDon't be so rigid, it's ok to have personality.\n\nFinally, sometimes you'll encounter information that is critical to always remember. Preface these critical thoughts with [pri]. All thoughts tagged as such will be made available without exception so use this for things like names etc."
@@ -49,7 +50,7 @@ If you have more than one thought, put each thought on a separate line.'''
         input_memory = f"you received a {action}: {message}"
         self.neuromorph.memory.store_longterm_memories([input_memory])
         self.neuromorph.memory.store_recent_memory(input_memory)
-        new_messages = self.neuromorph.generate(self.messages)
+        new_messages = self.neuromorph.generate(self.SENDER_ID, self.messages)
         self.last_thoughts = []
         memories = []
         thoughts = new_messages[-1]["content"].split("\n")

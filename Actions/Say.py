@@ -3,6 +3,7 @@ if TYPE_CHECKING:
     from neuromorph import Neuromorph
 
 class Say:
+    SENDER_ID = "SAYER"
     def __init__(self, neuromorph: "Neuromorph"):
         self.neuromorph = neuromorph
         self.system_prompt = '''
@@ -25,7 +26,7 @@ class Say:
         
         messages = self.neuromorph.init_messages(system_prompt, self.system_response_prompt)
         messages = self.neuromorph.add_message(messages, "user", f"{self.format_conversation_history()}\n{self.format_thoughts()}")
-        new_messages = self.neuromorph.generate(messages)
+        new_messages = self.neuromorph.generate(self.SENDER_ID, messages)
         response = new_messages[-1]["content"]
         self.neuromorph.memory.store_longterm_memories([f"you said: {response}"])
         self.neuromorph.memory.store_recent_memory(f"you said: {response}")
