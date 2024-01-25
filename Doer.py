@@ -9,6 +9,7 @@ if TYPE_CHECKING:
 # To make the neuromorph interesting, I'll have to add new actions and figure out some way to switch them
 # Probably another model call....
 class Doer:
+    SENDER_ID = "DOER"
     def __init__(self, neuromorph: "Neuromorph"):
         self.neuromorph = neuromorph
         self.say = Say.Say(neuromorph)
