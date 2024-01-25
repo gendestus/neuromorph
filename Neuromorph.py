@@ -156,6 +156,15 @@ class Neuromorph:
     # Method for interacting with the model
     # Handles passing in the messages in the correct format and returning the results
     def generate(self, messages):
+        if self.using_ollama:
+            return self.generate_ollama(messages)
+        else:
+            return self.generate_local(messages)
+    
+    def generate_ollama(self, messages):
+        print(messages)
+        pass
+    def generate_local(self, messages):
         encodings = self.tokenizer.apply_chat_template(messages, return_tensors="pt")
         model_inputs = encodings.to(self.device)
         self.model.to(self.device)
