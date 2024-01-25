@@ -34,7 +34,7 @@ class Say:
         return response
     
     def format_conversation_history(self):
-        history_str = "Conversation history:\n"
+        history_str = "Here's the Conversation history so far:\n"
         for message in self.conversation_history:
             history_str += f"{message}\n"
         return history_str
