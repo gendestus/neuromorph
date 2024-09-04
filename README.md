@@ -1,3 +1,6 @@
+# Important Note
+This project is NOT abandoned. I just had to revisit some core assumptions based on some corporate questions. Looking forward to the future with this.
+
 # Introducing Ada, the world's first neuromorphic assistant
 
 Neuro = Brain
