@@ -19,6 +19,10 @@ class Thinker(ConversableAgent):
     do not include the timestamp in your thought unless it is relevant to the thought you are generating.
     
     """
+    newborn_message = "Keep in mind that this is your very first thought. Make it a good one!"
+    recent_memories_message = "Here are some of your most recent memories. They may or may not be relevant:"
+    pertinent_memories_message = "Here are your memories that pertain to the input:"
+    core_memories_message = "Here are some of your core memories. These should influence all thought but shouldn't be forced in where they do not belong:"
     config_list = [
         {
             "model":MISTRAL,
@@ -27,5 +31,21 @@ class Thinker(ConversableAgent):
             "price":[0,0]
         }
     ]
-    def __init__(self):
+    def __init__(self, recent_memories: list|None = None, pertinent_memories: list|None = None, core_memories: list|None = None):
+        configured_system_message = self.system_message
+        if recent_memories:
+            configured_system_message += f"\n\n{self.recent_memories_message}"
+            for memory in recent_memories:
+                configured_system_message += f"\n{memory}"
+        if pertinent_memories:
+            configured_system_message += f"\n\n{self.pertinent_memories_message}"
+            for memory in pertinent_memories:
+                configured_system_message += f"\n{memory}"
+        if core_memories:
+            configured_system_message += f"\n\n{self.core_memories_message}"
+            for memory in core_memories:
+                configured_system_message += f"\n{memory}"
+        if recent_memories is None and pertinent_memories is None and core_memories is None:
+            configured_system_message += f"\n\n{self.newborn_message}"
+        self.system_message = configured_system_message
         super(Thinker, self).__init__(name=self.name, description=self.description, system_message=self.system_message, llm_config={"config_list":self.config_list})

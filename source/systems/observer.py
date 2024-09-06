@@ -7,9 +7,10 @@ class Observation(BaseModel):
     observation: str
     source: str
     timestamp: str
+    observation_type: str
 
     def __str__(self):
-        return f"{self.timestamp} - from: {self.source} - {self.observation}"
+        return f"[{self.observation_type.upper()}] from: {self.source} - {self.observation}"
 
 
 

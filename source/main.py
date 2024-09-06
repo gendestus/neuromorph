@@ -2,8 +2,6 @@ import datetime
 
 from fastapi import FastAPI
 
-from pymongo import MongoClient
-
 from systems.observer import Observation, observe
 from utils import DB_NAME, OUTPUT_COLLECTION
 

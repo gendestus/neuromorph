@@ -12,6 +12,8 @@ It attempts to normalize the URL by appending "/v1" to the URL if it is not alre
 def get_model_baseurl() -> str:
     if os.getenv("MODEL_BASEURL"):
         url = os.getenv("MODEL_BASEURL")
+        if "http" not in url:
+            raise ValueError("MODEL_BASEURL must be a valid URL. The value supplied is missing the protocol (http/https)")
         if "/v1" in url:
             return url
         else:
