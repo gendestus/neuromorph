@@ -1,5 +1,5 @@
-pyautogen
 chromadb
 fastapi[standard]
+openai
 pymongo
 pymssql

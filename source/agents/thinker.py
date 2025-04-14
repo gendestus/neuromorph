@@ -1,31 +1,33 @@
-from autogen import ConversableAgent
+from agent import Agent
 
-from models import MISTRAL
-from utils import get_model_baseurl
-
-class Thinker(ConversableAgent):
-    name = "Thinker"
-    description = """An agent that takes some form of input and generates a thought about it."""
-    system_message = """
-    You are an AI simulation of a thinker. You are designed to generate thoughts about the input you receive. 
-    The input can be a command or question from a user or an observation from the environment. Be introspective about
-    what the input means and generate a thought about it. Thoughts should be concise and convey enough information that
-    another agent can evaluate the thought and respond to it. Create thoughts that are matter of fact observations based
-    on input. Do not respond with questions or commands. Keep all thoughts matter of fact.
-
-    Observations will be provided in the following format:
-    timestamp - from: source - observation
-
-    do not include the timestamp in your thought unless it is relevant to the thought you are generating.
-    
-    """
-    config_list = [
-        {
-            "model":MISTRAL,
-            "base_url":get_model_baseurl(),
-            "api_key":"tbd",
-            "price":[0,0]
-        }
-    ]
+class Thinker(Agent):
     def __init__(self):
-        super(Thinker, self).__init__(name=self.name, description=self.description, system_message=self.system_message, llm_config={"config_list":self.config_list})
+        super().__init__(name="Thinker", description="A system that processes observations and memories.")
+        self.system_prompt = """
+        You are a system that processes observations and memories.
+        You will be given observations and memories to process alongside potentially relevant information
+        based on past performance. Memories can be normal memories or core memories.
+        Core memories define who you are and how you should behave and persist over time. Normal memories may be
+        the result of an observation or a thought based in introspection. All responses should be in first person,
+        such as 'I think' or 'I feel'.
+        Your job is to process these observations and memories and return a response that reflects your understanding
+        
+        The output of the thoughts will get stored in a vector store to be used for future reference
+        """
+
+    def think(self, memory: str, core_memories: list, relevant_info: list) -> str:
+        formatted_core_memories = "\n".join([f"- {memory}" for memory in core_memories])
+        formatted_relevant_info = "\n".join([f"- {info}" for info in relevant_info])
+        
+        message = f"""
+        Core Memories:
+        {formatted_core_memories}
+
+        Potentially Relevant Information:
+        {formatted_relevant_info}
+
+        Memory:
+        {memory}"""
+
+        response = self.get_completion(message)
+        return response    
