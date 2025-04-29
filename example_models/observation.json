@@ -1,0 +1,12 @@
+{
+    "source": "source-system",
+    "timestamp": "2023-10-01T12:00:00Z",
+    "input_type": "chat|hardware_sensor|file_upload",
+    "content": "this is the content. If it's binary, it should be base64 encoded.",
+    "content_type": "text|binary",
+    "metadata": {
+        "source": "chat:user",
+        "channel": "slack",
+        "user_id": "U18208"
+    }
+}

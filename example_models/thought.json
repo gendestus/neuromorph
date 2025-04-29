@@ -1,0 +1,23 @@
+{
+    "timestamp": "2023-10-01T12:00:00Z",
+    "thought_id": "thought_uuid",
+    "thought": "this is the thought. it should cover what the thinker thinks about the content chain",
+    "content_chain": [
+        {
+            "content_type":"observation",
+            "content_id":"observation_uuid"
+        },
+        {
+            "content_type":"thought",
+            "content_id":"thought_uuid"
+        },
+        {
+            "content_type": "action",
+            "content_id": "action_uuid"
+        }
+    ],
+    "metadata": {
+
+    }
+
+}

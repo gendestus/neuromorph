@@ -1,0 +1,12 @@
+{
+    "timestamp": "2023-10-01T12:00:00Z",
+    "action_type": "chat|whatever",
+    "action_id": "action_uuid",
+    "action_description": "this is the action. it should cover what the action does",
+    "result": "this is what happened. This field will fill out the memory chain.",
+    "metadata": {
+        "source": "chat:user",
+        "channel": "slack",
+        "user_id": "U18208"
+    }
+}

@@ -1,1 +1,0 @@
-MISTRAL="mistral"
