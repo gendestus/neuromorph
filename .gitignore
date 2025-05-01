@@ -1,3 +1,7 @@
 dbcreds.json
 dbcreds.local.json
 test-notebook.ipynb
+__pycache__/
+chroma.log
+.env
+neuromorph.egg-info/

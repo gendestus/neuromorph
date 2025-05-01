@@ -1,4 +1,4 @@
-from .llm_backends.llm_backend import LLMBackend
+from neuromorph.agents.llm_backends.llm_backend import LLMBackend
 
 class Agent:
     

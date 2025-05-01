@@ -1,5 +1,5 @@
-from source.data_models.action import Action
-from source.data_models.thought import Thought
+from neuromorph.data_models.action import Action
+from neuromorph.data_models.thought import Thought
 
 class Doer:
     def __init__(self):

@@ -1,0 +1,42 @@
+[project]
+name = "neuromorph"
+version = "0.1.0"
+description = "A neuromorphic agent framework that seeks to replicate the structure and apparatuses of the human brain."
+authors = [
+    { name = "Zach Tobias", email = "you@example.com" }
+]
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.9"
+dependencies = [
+    "chromadb",
+    "pydantic>=2.0",
+    "openai",
+    "pyodbc"
+]
+
+[project.urls]
+Homepage = "https://github.com/gendestus/neuromorph"
+Issues = "https://github.com/gendestus/neuromorph/issues"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = ["tests"]
+
+[tool.black]
+line-length = 88
+target-version = ["py39"]
+
+[tool.isort]
+profile = "black"

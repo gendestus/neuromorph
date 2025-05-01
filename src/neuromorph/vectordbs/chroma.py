@@ -3,23 +3,20 @@ import uuid
 
 import chromadb.errors
 
-from .vectorstore import VectorStore
+from neuromorph.vectordbs.vectorstore import VectorStore
 
 class Chroma(VectorStore):
 
     LONG_TERM_MEMORY_COLLECTION_NAME = "long_term_memory"
 
-    def __init__(self, use_local: bool = True):
-        super().__init__(use_local)
-        self.use_local = use_local
+    def __init__(self, creds_file: str = None):
+        super().__init__(creds_file=creds_file)
 
-        creds = self.get_creds()
-
-        if creds is None:
+        if self.creds is None:
             print("No credentials available.")
             return None
-        host = creds["vector_db_host"]
-        port = creds["vector_db_port"]
+        host = self.creds["vector_db_host"]
+        port = self.creds["vector_db_port"]
 
         self.chroma_client = chromadb.HttpClient(host, port)
 

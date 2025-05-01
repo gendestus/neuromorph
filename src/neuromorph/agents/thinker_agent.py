@@ -1,8 +1,8 @@
-from .agent import Agent
-from .llm_backends.llm_backend import LLMBackend
-from source.data_models.observation import Observation
-from source.relationaldbs.database import Database
-from source.vectordbs.vectorstore import VectorStore
+from neuromorph.agents.agent import Agent
+from neuromorph.agents.llm_backends.llm_backend import LLMBackend
+from neuromorph.data_models.observation import Observation
+from neuromorph.relationaldbs.database import Database
+from neuromorph.vectordbs.vectorstore import VectorStore
 
 class ThinkerAgent(Agent):
     CORE_MEMORIES_TAG = "core_memories"

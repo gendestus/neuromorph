@@ -1,14 +1,13 @@
 import json
 
 class VectorStore:
-    def __init__(self, use_local: bool = True):
-        self.use_local = use_local
+    def __init__(self, creds_file: str = None):
+        self.creds = self.get_creds(creds_file)
 
-    def get_creds(self):
-        if self.use_local:
-            creds_file = "source/dbcreds.local.json"
-        else:
-            creds_file = "source/dbcreds.json"
+    def get_creds(self, creds_file: str = None):
+        if not creds_file:
+            raise ValueError("Credentials file path must be provided.")
+            
         try:
             with open(creds_file, "r") as f:
                 creds = json.load(f)

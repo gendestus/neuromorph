@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field
+from datetime import datetime
 
 class Observation(BaseModel):
     """
@@ -14,7 +15,7 @@ class Observation(BaseModel):
     """
 
     source: str = Field(..., description="Where the observation came from")
-    timestamp: str = Field(..., description="When the observation was made")
+    timestamp: datetime = Field(..., description="When the observation was made")
     input_type: str = Field(..., description="The type of observation (chat, hardware_sensor, file_upload, etc)")
     content: str = Field(..., description="The content of the observation")
     content_type: str = Field(..., description="The type of content (text, binary, etc)")
